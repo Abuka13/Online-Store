@@ -4,7 +4,8 @@
   "description": "This is the educational project that was given by Web Development (Backend) course. Our goal is to develop the web application by using Node.js as the backend and MongoDB as our db.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node server.js",
+    "dev": "nodemon server.js"
   },
   "repository": {
     "type": "git",
@@ -24,5 +25,8 @@
     "express": "^5.2.1",
     "jsonwebtoken": "^9.0.3",
     "mongoose": "^9.1.5"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.11"
   }
 }
