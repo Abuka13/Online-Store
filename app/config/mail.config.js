@@ -6,5 +6,5 @@ module.exports = {
     user: process.env.SMTP_USER,
     pass: process.env.SMTP_PASS
   },
-  from: process.env.SMTP_FROM || "Online Store <no-reply@online-store.com>"
+  from: process.env.SMTP_FROM || "Online Store <bestonlinestore588@gmail.com>"
 };

@@ -16,19 +16,33 @@ function getTransporter() {
 }
 
 async function sendMail({ to, subject, text, html }) {
-  // если SMTP не настроен — не валим сервер
+  // если SMTP не настроен — показываем в консоль
   if (!mailConfig.host || !mailConfig.auth?.user || !mailConfig.auth?.pass) {
-    console.warn("📧 SMTP not configured. Email skipped.");
-    return { skipped: true };
+    console.log("📧 SMTP not configured.");
+    console.log("To:", to);
+    console.log("Subject:", subject);
+    console.log("Message:", text);
+    return { skipped: true, sentToConsole: true };
   }
 
-  return getTransporter().sendMail({
-    from: mailConfig.from,
-    to,
-    subject,
-    text,
-    html
-  });
+  try {
+    const result = await getTransporter().sendMail({
+      from: mailConfig.from,
+      to,
+      subject,
+      text,
+      html
+    });
+    console.log("✅ Email sent successfully to:", to);
+    return result;
+  } catch (error) {
+    console.error("❌ Error sending email:", error.message);
+    // В режиме разработки показываем в консоль
+    console.log("📧 DEBUG MODE - Would send to:", to);
+    console.log("Subject:", subject);
+    console.log("Message:", text);
+    return { error: error.message, sentToConsole: true };
+  }
 }
 
 async function sendWelcomeEmail({ to, name }) {
@@ -51,7 +65,23 @@ async function sendOrderConfirmationEmail({ to, name, orderId, total }) {
   });
 }
 
+async function sendPasswordResetEmail({ to, name, resetLink }) {
+  return sendMail({
+    to,
+    subject: "Password Reset Request 🔐",
+    text: `Hi ${name}, click the link to reset your password: ${resetLink}`,
+    html: `<h2>Password Reset Request</h2>
+           <p>Hi ${name},</p>
+           <p>You requested a password reset. Click the button below to proceed:</p>
+           <p><a href="${resetLink}" style="display: inline-block; background-color: #007bff; color: white; padding: 10px 20px; border-radius: 5px; text-decoration: none;">Reset Password</a></p>
+           <p>Or copy this link: ${resetLink}</p>
+           <p>This link expires in 1 hour.</p>
+           <p>If you didn't request this, ignore this email.</p>`
+  });
+}
+
 module.exports = {
   sendWelcomeEmail,
-  sendOrderConfirmationEmail
+  sendOrderConfirmationEmail,
+  sendPasswordResetEmail
 };
