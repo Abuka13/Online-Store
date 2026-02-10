@@ -39,6 +39,7 @@ All team members contributed to backend development, database design, API implem
 - bcryptjs
 
 ### Frontend
+- React
 - HTML
 - CSS
 - JavaScript  
