@@ -101,6 +101,12 @@ JWT_EXPIRES_IN=7d
 npm run dev
 
 
+The bonus tasks were included
+
+We have roles like admin and users.
+
+SMTP Email Service we integrated. You can get a message on your email if you forgot your password
+
 🔐 Authentication & Security
 
 Passwords are encrypted using bcrypt
@@ -132,19 +138,7 @@ GET	/api/users/profile	Get user profile
 
 PUT	/api/users/profile	Update user profile
 
-🗂 Categories
 
-Method	Endpoint	Access	Description
-
-GET	/api/categories	Public	Get all categories
-
-GET	/api/categories/:id	Public	Get category by ID
-
-POST	/api/categories	Admin	Create category
-
-PUT	/api/categories/:id	Admin	Update category
-
-DELETE	/api/categories/:id	Admin	Delete category
 
 📦 Products
 
