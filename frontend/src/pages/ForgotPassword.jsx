@@ -19,7 +19,7 @@ export default function ForgotPassword() {
 
     try {
       setBusy(true);
-      const res = await api.post("/auth/forgot-password", { email });
+      const res = await api.post("/api/auth/forgot-password", { email });
       setMsg(res.data.message);
       setEmail("");
     } catch (e) {

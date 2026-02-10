@@ -1,24 +1,11 @@
-const nodemailer = require("nodemailer");
-const mailConfig = require("../config/mail.config");
+const { Resend } = require("resend");
 
-let transporter;
-
-function getTransporter() {
-  if (!transporter) {
-    transporter = nodemailer.createTransport({
-      host: mailConfig.host,
-      port: mailConfig.port,
-      secure: mailConfig.secure,
-      auth: mailConfig.auth
-    });
-  }
-  return transporter;
-}
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 async function sendMail({ to, subject, text, html }) {
-  // если SMTP не настроен — показываем в консоль
-  if (!mailConfig.host || !mailConfig.auth?.user || !mailConfig.auth?.pass) {
-    console.log("📧 SMTP not configured.");
+  // если RESEND_API_KEY не настроен
+  if (!process.env.RESEND_API_KEY) {
+    console.log("📧 RESEND_API_KEY not configured.");
     console.log("To:", to);
     console.log("Subject:", subject);
     console.log("Message:", text);
@@ -26,18 +13,25 @@ async function sendMail({ to, subject, text, html }) {
   }
 
   try {
-    const result = await getTransporter().sendMail({
-      from: mailConfig.from,
+    const result = await resend.emails.send({
+      from: process.env.EMAIL_FROM || "noreply@onlinestore.com",
       to,
       subject,
-      text,
-      html
+      html: html || text
     });
+
+    if (result.error) {
+      console.error("❌ Resend error:", result.error.message);
+      console.log("📧 DEBUG MODE - Would send to:", to);
+      console.log("Subject:", subject);
+      console.log("Message:", text);
+      return { error: result.error.message, sentToConsole: true };
+    }
+
     console.log("✅ Email sent successfully to:", to);
     return result;
   } catch (error) {
     console.error("❌ Error sending email:", error.message);
-    // В режиме разработки показываем в консоль
     console.log("📧 DEBUG MODE - Would send to:", to);
     console.log("Subject:", subject);
     console.log("Message:", text);
