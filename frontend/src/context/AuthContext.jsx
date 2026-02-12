@@ -15,7 +15,7 @@ export function AuthProvider({ children }) {
     (async () => {
       try {
         if (!token) return;
-        const res = await api.get("/api/users/profile");
+        const res = await api.get("/users/profile");
         setUser(res.data);
         localStorage.setItem("user", JSON.stringify(res.data));
       } catch {
@@ -42,7 +42,7 @@ export function AuthProvider({ children }) {
     isPremium: user?.role === "premium",
 
     async login(email, password) {
-      const res = await api.post("/api/auth/login", { email, password });
+      const res = await api.post("/auth/login", { email, password });
       const { token: jwt, user: u } = res.data;
       setToken(jwt);
       setUser(u);
@@ -51,11 +51,11 @@ export function AuthProvider({ children }) {
     },
 
     async register(name, email, password) {
-      await api.post("/api/auth/register", { name, email, password });
+      await api.post("/auth/register", { name, email, password });
     },
 
     async updateProfile(payload) {
-      const res = await api.put("/api/users/profile", payload);
+      const res = await api.put("/users/profile", payload);
       const u = res.data?.user;
       if (u) {
         setUser(u);

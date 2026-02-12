@@ -16,7 +16,7 @@ export default function OrderDetails() {
   async function load() {
     setErr(""); setMsg("");
     try {
-      const res = await api.get(`/api/orders/${id}`);
+      const res = await api.get(`/orders/${id}`);
       setO(res.data);
     } catch (e) {
       setErr(e?.response?.data?.message || "Failed");
@@ -28,7 +28,7 @@ export default function OrderDetails() {
   async function cancel() {
     setErr(""); setMsg("");
     try {
-      const res = await api.delete(`/api/orders/${id}/cancel`);
+      const res = await api.delete(`/orders/${id}/cancel`);
       setMsg(res.data?.message || "Cancelled");
       await load();
     } catch (e) {
@@ -39,7 +39,7 @@ export default function OrderDetails() {
   async function markPaid() {
     setErr(""); setMsg("");
     try {
-      await api.put(`/api/orders/${id}/pay`, {});
+      await api.put(`/orders/${id}/pay`, {});
       setMsg("Marked paid");
       await load();
     } catch (e) {
@@ -50,7 +50,7 @@ export default function OrderDetails() {
   async function setStatus(status) {
     setErr(""); setMsg("");
     try {
-      await api.put(`/api/orders/${id}/status`, { status });
+      await api.put(`/orders/${id}/status`, { status });
       setMsg("Status updated");
       await load();
     } catch (e) {

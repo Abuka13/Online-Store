@@ -12,7 +12,7 @@ export default function Orders() {
     setErr("");
     try {
       setBusy(true);
-      const res = await api.get("/api/orders");
+      const res = await api.get("/orders");
       setItems(res.data || []);
     } catch (e) {
       setErr(e?.response?.data?.message || "Failed");

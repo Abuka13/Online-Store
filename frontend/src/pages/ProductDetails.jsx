@@ -14,7 +14,7 @@ export default function ProductDetails() {
   async function load() {
     setErr(""); setMsg("");
     try {
-      const res = await api.get(`/api/products/${id}`);
+      const res = await api.get(`/products/${id}`);
       setP(res.data);
     } catch (e) {
       setErr(e?.response?.data?.message || "Failed to load");
@@ -26,7 +26,7 @@ export default function ProductDetails() {
     setErr(""); setMsg("");
     if (!isAuthed) return setErr("Login to add to cart");
     try {
-      await api.post("/api/cart/add", { productId: id, quantity: 1 });
+      await api.post("/cart/add", { productId: id, quantity: 1 });
       setMsg("Added to cart ✅");
     } catch (e) {
       setErr(e?.response?.data?.message || "Failed");
@@ -37,7 +37,7 @@ export default function ProductDetails() {
     if (!isAdmin) return;
     if (!confirm("Delete product?")) return;
     try {
-      await api.delete(`/api/products/${id}`);
+      await api.delete(`/products/${id}`);
       window.location.href = "/products";
     } catch (e) {
       setErr(e?.response?.data?.message || "Delete failed");

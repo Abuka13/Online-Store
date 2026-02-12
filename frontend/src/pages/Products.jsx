@@ -15,7 +15,7 @@ export default function Products() {
     setErr("");
     try {
       setBusy(true);
-      const res = await api.get("/api/products");
+      const res = await api.get("/products");
       setItems(res.data || []);
     } catch (e) {
       setErr(e?.response?.data?.message || "Failed to load");

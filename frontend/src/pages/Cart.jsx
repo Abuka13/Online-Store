@@ -12,7 +12,7 @@ export default function Cart() {
     setErr("");
     try {
       setBusy(true);
-      const res = await api.get("/api/cart");
+      const res = await api.get("/cart");
       setCart(res.data);
     } catch (e) {
       setErr(e?.response?.data?.message || "Failed");
@@ -25,7 +25,7 @@ export default function Cart() {
 
   async function updateQty(productId, quantity) {
     try {
-      await api.put("/api/cart/update", { productId, quantity });
+      await api.put("/cart/update", { productId, quantity });
       await load();
     } catch (e) {
       setErr(e?.response?.data?.message || "Update failed");
@@ -34,7 +34,7 @@ export default function Cart() {
 
   async function remove(productId) {
     try {
-      await api.delete(`/api/cart/remove/${productId}`);
+      await api.delete(`/cart/remove/${productId}`);
       await load();
     } catch (e) {
       setErr(e?.response?.data?.message || "Remove failed");
@@ -43,7 +43,7 @@ export default function Cart() {
 
   async function clear() {
     try {
-      await api.delete("/api/cart/clear");
+      await api.delete("/cart/clear");
       await load();
     } catch (e) {
       setErr(e?.response?.data?.message || "Clear failed");
@@ -52,7 +52,7 @@ export default function Cart() {
 
   async function checkout() {
     try {
-      const res = await api.post("/api/orders", {
+      const res = await api.post("/orders", {
         shippingAddress: { address: "Demo address", city: "Demo city" },
         paymentMethod: "cash"
       });

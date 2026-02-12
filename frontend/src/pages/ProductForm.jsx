@@ -20,7 +20,7 @@ export default function ProductForm({ mode }) {
     if (mode !== "edit") return;
     (async () => {
       try {
-        const res = await api.get(`/api/products/${id}`);
+        const res = await api.get(`/products/${id}`);
         const p = res.data;
         setName(p.name || "");
         setDescription(p.description || "");
@@ -49,8 +49,8 @@ export default function ProductForm({ mode }) {
 
     try {
       setBusy(true);
-      if (mode === "create") await api.post("/api/products", payload);
-      else await api.put(`/api/products/${id}`, payload);
+      if (mode === "create") await api.post("/products", payload);
+      else await api.put(`/products/${id}`, payload);
       nav("/products");
     } catch (e2) {
       setErr(e2?.response?.data?.message || "Save failed (admin only)");
